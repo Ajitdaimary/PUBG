@@ -32,7 +32,7 @@ async def on_message(message):
 async def ownerinfo(ctx):
     embed = discord.Embed(title="Information about owner", description="Bot Name- Soyal", color=0x00ff00)
     embed.set_footer(text="MARCOS")
-    embed.set_author(name=" Bot Owner Name- MARCOS,472680171451973632")
+    embed.set_author(name=" Bot Owner Name- MARCOS,498378677512437762")
     embed.add_field(name="Site- coming soon...", value="Thanks for adding our bot", inline=True)
     await client.say(embed=embed)
 
