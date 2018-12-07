@@ -1,25 +1,101 @@
 import discord
-from discord.ext.commands import bot
 from discord.ext import commands
+from discord.ext.commands.cooldowns import BucketType
 import asyncio
-import time
+import colorsys
 import random
-from discord import Game
+import platform
+from discord import Game, Embed, Color, Status, ChannelType
+import os
+import functools
+import time
+import datetime
 
-
-Client = discord.client
-client = commands.Bot(command_prefix = '!!' )
-Clientdiscord = discord.Client()
-
+client = commands.Bot(description="Here is some command for you", command_prefix=commands.when_mentioned_or("p!"), pm_help = False)
 
 @client.event
 async def on_ready():
-	await client.change_presence(game=Game(name='Killing'))
-	print('Ready, Freddy')
+	print('Logged in as '+client.user.name+'')
+	print('--------')
+	print('--------')
+	print('Started Soyal') #add_your_bot_name_here
+	return await client.change_presence(game=discord.Game(name='PUBG')) #add_your_bot_status_here
 
 @client.event
-async def on message(message):
-	if message.content == '!!hi':
-		await client.sand_message(message.channel, 'Hello')
-		
-client.run('TOKEN')
+async def on_message(message):
+    channel = client.get_channel('519791076803084288')
+    if message.server is None and message.author != client.user:
+        await client.send_message(channel, '{} : <@{}> : '.format(message.author.name, message.author.id) + message.content)
+    await client.process_commands(message)
+
+@client.command(pass_context=True)
+async def ownerinfo(ctx):
+    embed = discord.Embed(title="Information about owner", description="Bot Name- Soyal", color=0x00ff00)
+    embed.set_footer(text="MARCOS")
+    embed.set_author(name=" Bot Owner Name- MARCOS,472680171451973632")
+    embed.add_field(name="Site- coming soon...", value="Thanks for adding our bot", inline=True)
+    await client.say(embed=embed)
+
+@client.event
+async def on_member_join(member):
+    print("In our server" + member.name + " just joined")
+    r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
+    embed = discord.Embed(color = discord.Color((r << 16) + (g << 8) + b))
+    embed.set_author(name='Welcome message')
+    embed.add_field(name = '__Welcome to Our Server__',value ='**Thanks for Joining our Server Hope you enjoy please respect all members and staff.**',inline = False)
+    embed.set_image(url = 'https://media.giphy.com/media/OkJat1YNdoD3W/giphy.gif')
+    await client.send_message(member,embed=embed)
+    print("Sent message to " + member.name)
+    channel = discord.utils.get(client.get_all_channels(), server__name='bysoyal2', name='welcome')
+    r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
+    embed = discord.Embed(title=f'Welcome {member.name} to {member.server.name}', description='Do not forget to check Rules and never try to break any one of them', color = discord.Color((r << 16) + (g << 8) + b))
+    embed.add_field(name='__Thanks for joining__', value='**Hope you will be active here.**', inline=True)
+    embed.add_field(name='Your join position is', value=member.joined_at)
+    embed.set_image(url = 'https://media.giphy.com/media/OkJat1YNdoD3W/giphy.gif')
+    embed.set_thumbnail(url=member.avatar_url)
+    await client.send_message(channel, embed=embed)
+	
+@client.command(pass_context = True)
+@commands.has_permissions(kick_members=True) 
+@commands.cooldown(rate=5,per=86400,type=BucketType.user) 
+async def access(ctx, member: discord.Member):
+    if ctx.message.author.bot:
+      return
+    else:
+      role = discord.utils.get(member.server.roles, name='access')
+      await client.add_roles(member, role)
+      await client.say("Gave access to {}".format(member))
+      for channel in member.server.channels:
+        if channel.name == 'soyal-log':
+            embed=discord.Embed(title="User Got Access!", description="**{0}** got access from **{1}**!".format(member, ctx.message.author), color=0x020202)
+            await client.send_message(channel, embed=embed)
+            await asyncio.sleep(45*60)
+            await client.remove_roles(member, role)
+
+@client.command(pass_context=True)
+async def poll(ctx, question, *options: str):
+        if len(options) <= 1:
+            await client.say('You need more than one option to make a poll!')
+            return
+        if len(options) > 10:
+            await client.say('You cannot make a poll for more than 10 things!')
+            return
+
+        if len(options) == 2 and options[0] == 'yes' and options[1] == 'no':
+            reactions = ['👍', '👎']
+        else:
+            reactions = ['1\u20e3', '2\u20e3', '3\u20e3', '4\u20e3', '5\u20e3', '6\u20e3', '7\u20e3', '8\u20e3', '9\u20e3', '\U0001f51f']
+
+        description = []
+        for x, option in enumerate(options):
+            description += '\n {} {}'.format(reactions[x], option)
+            r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
+        embed = discord.Embed(title=question, description=''.join(description), color = discord.Color((r << 16) + (g << 8) + b))
+        react_message = await client.say(embed=embed)
+        for reaction in reactions[:len(options)]:
+            await client.add_reaction(react_message, reaction)
+        embed.set_footer(text='Poll ID: {}'.format(react_message.id))
+        await client.edit_message(react_message, embed=embed)
+
+
+client.run(os.getenv('Token'))
