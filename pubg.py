@@ -182,6 +182,15 @@ async def kick(ctx,user:discord.Member):
             embed=discord.Embed(title="User kicked!", description="**{0}** is kicked by **{1}**!".format(user, ctx.message.author), color=0xFDE112)
             await client.send_message(channel, embed=embed)
 		
+@client.command(pass_context = True)
+@commands.has_permissions(administrator=True) 
+async def bans(ctx):
+    '''Gets A List Of Users Who Are No Longer With us'''
+    x = await client.get_bans(ctx.message.server)
+    x = '\n'.join([y.name for y in x])
+    embed = discord.Embed(title = "List of The Banned Idiots", description = x, color = 0xFFFFF)
+    return await client.say(embed = embed)
+
 @client.command(pass_context=True)  
 @commands.has_permissions(ban_members=True)     
 async def unban(ctx):
