@@ -155,6 +155,17 @@ async def unmute(ctx, member: discord.Member=None):
             await client.send_message(channel, embed=embed)
 		
 @client.command(pass_context = True)
+@commands.has_permissions(kick_members=True)
+async def warn(ctx, userName: discord.User=None, *, message:str=None): 
+    if userName is None:
+      await client.say('Please tag a person to warn user. Example- ``mv!warn @user <reason>``')
+      return
+    else:
+      await client.send_message(userName, "You have been warned for: **{}**".format(message))
+      await client.say(":warning: __**{0} Has Been Warned!**__ :warning: ** Reason:{1}** ".format(userName,message))
+      pass
+
+@client.command(pass_context = True)
 @commands.has_permissions(kick_members=True)     
 async def userinfo(ctx, user: discord.Member=None):
     if user is None:
