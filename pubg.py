@@ -165,6 +165,23 @@ async def warn(ctx, userName: discord.User=None, *, message:str=None):
       await client.say(":warning: __**{0} Has Been Warned!**__ :warning: ** Reason:{1}** ".format(userName,message))
       pass
 
+@client.command(pass_context=True)  
+@commands.has_permissions(kick_members=True)     
+async def kick(ctx,user:discord.Member):
+    if user is None:
+      await client.say('Please mention a member to kick. Example- ``mv!kick @user``')
+    if user.server_permissions.kick_members:
+      await client.say('**He is mod/admin and i am unable to kick him/her**')
+      return
+    else:
+      await client.kick(user)
+      await client.say(user.name+' was kicked. Good bye '+user.name+'!')
+      await client.delete_message(ctx.message)
+      for channel in user.server.channels:
+        if channel.name == '???-multiverse-log-???':
+            embed=discord.Embed(title="User kicked!", description="**{0}** is kicked by **{1}**!".format(user, ctx.message.author), color=0xFDE112)
+            await client.send_message(channel, embed=embed)
+		
 @client.command(pass_context = True)
 @commands.has_permissions(kick_members=True)     
 async def userinfo(ctx, user: discord.Member=None):
@@ -182,7 +199,5 @@ async def userinfo(ctx, user: discord.Member=None):
       embed.add_field(name="Joined", value=user.joined_at)
       embed.set_thumbnail(url=user.avatar_url)
       await client.say(embed=embed)
-
-
 	
 client.run(os.getenv('Token'))
