@@ -125,6 +125,31 @@ async def meme(ctx):
     await client.send_typing(ctx.message.channel)
     await client.send_message(ctx.message.channel, embed=embed) 
 
+@client.command(pass_context=True)
+@commands.check(is_dark)
+async def botdm(ctx, user: discord.Member, *, msg: str):
+    await client.send_typing(user)
+    await client.send_message(user, msg)
+    	
+@client.command(pass_context = True)
+async def rolldice(ctx):
+    choices = ['1', '2', '3', '4', '5', '6']
+    color = discord.Color(value=0x00ff00)
+    em = discord.Embed(color=color, title='Rolled! (1 6-sided die)', description=random.choice(choices))
+    await client.send_typing(ctx.message.channel)
+    await client.say(embed=em)
 
+   
+@client.command(pass_context = True)
+@commands.has_permissions(administrator = True)
+async def dm(ctx, user: discord.Member, *, msg: str):
+    try:
+        await client.send_message(user, msg)
+        await client.delete_message(ctx.message)          
+        await client.say("Success! Your DM has made it! :white_check_mark: ")
+    except discord.ext.commands.MissingPermissions:
+        await client.say("Aw, come on! You thought you could get away with DM'ing people without permissions.")
+    except:
+        await client.say("Error :x:. Make sure your message is shaped in this way: mv!dm [tag person] [msg]")
 
 client.run(os.getenv('Token'))
