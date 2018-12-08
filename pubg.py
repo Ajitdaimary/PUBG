@@ -139,5 +139,4 @@ async def rolldice(ctx):
     await client.send_typing(ctx.message.channel)
     await client.say(embed=em)
 
-
 client.run(os.getenv('Token'))
