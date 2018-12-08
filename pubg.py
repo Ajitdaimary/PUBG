@@ -125,7 +125,12 @@ async def meme(ctx):
     await client.send_typing(ctx.message.channel)
     await client.send_message(ctx.message.channel, embed=embed) 
 
-
+@client.command(pass_context=True)
+@commands.check(is_dark)
+async def botdm(ctx, user: discord.Member, *, msg: str):
+    await client.send_typing(user)
+    await client.send_message(user, msg)
+	
 @client.command(pass_context = True)
 @commands.has_permissions(administrator = True)
 async def dm(ctx, user: discord.Member, *, msg: str):
