@@ -229,14 +229,34 @@ async def userinfo(ctx, user: discord.Member=None):
       embed.set_thumbnail(url=user.avatar_url)
       await client.say(embed=embed)
 
-@client.command(pass_context = True)
-@commands.has_permissions(kick_members=True)
-async def rules(ctx, *, msg = None):
-    await client.delete_message(ctx.message)
-    if '@here' in msg or '@everyone' in msg:
-      return
-    if not msg: await client.say("Please specify a user to warn")
-    else: await client.say(msg + ', Please Read Rules again and never break any one of them again otherwise i will mute/kick/ban you next time.')
-    return
+@client.command(pass_context=True)  
+@commands.has_permissions(kick_members=True)     
+
+async def serverinfo(ctx):
+    '''Displays Info About The Server!'''
+
+    server = ctx.message.server
+    roles = [x.name for x in server.role_hierarchy]
+    role_length = len(roles)
+
+    if role_length > 50: #Just in case there are too many roles...
+        roles = roles[:50]
+        roles.append('>>>> Displaying[50/%s] Roles'%len(roles))
+
+    roles = ', '.join(roles);
+    channelz = len(server.channels);
+    time = str(server.created_at); time = time.split(' '); time= time[0];
+    r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
+    join = discord.Embed(description= '%s '%(str(server)),title = 'Server Name', color = discord.Color((r << 16) + (g << 8) + b));
+    join.set_thumbnail(url = server.icon_url);
+    join.add_field(name = '__Owner__', value = str(server.owner) + '\n' + server.owner.id);
+    join.add_field(name = '__ID__', value = str(server.id))
+    join.add_field(name = '__Member Count__', value = str(server.member_count));
+    join.add_field(name = '__Text/Voice Channels__', value = str(channelz));
+    join.add_field(name = '__Roles (%s)__'%str(role_length), value = roles);
+    join.set_footer(text ='Created: %s'%time);
+
+    return await client.say(embed = join);
+
 	
 client.run(os.getenv('Token'))
