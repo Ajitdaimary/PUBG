@@ -137,5 +137,21 @@ async def dm(ctx, user: discord.Member, *, msg: str):
         await client.say("Aw, come on! You thought you could get away with DM'ing people without permissions.")
     except:
         await client.say("Error :x:. Make sure your message is shaped in this way: p!dm [tag person] [msg]")
+	
+@client.command(pass_context = True)
+@commands.has_permissions(kick_members=True) 
+async def unmute(ctx, member: discord.Member=None):
+    if member is None:
+      await client.say('Please specify member i.e. Mention a member to unmute. Example- ``mv!unmute @user``')
+    if ctx.message.author.bot:
+      return
+    else:
+      role = discord.utils.get(member.server.roles, name='Muted')
+      await client.remove_roles(member, role)
+      await client.say("Unmuted **{}**".format(member))
+      for channel in member.server.channels:
+        if channel.name == '???-multiverse-log-???':
+            embed=discord.Embed(title="User unmuted!", description="**{0}** was unmuted by **{1}**!".format(member, ctx.message.author), color=0xFD1600)
+            await client.send_message(channel, embed=embed)
 
 client.run(os.getenv('Token'))
