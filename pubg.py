@@ -182,6 +182,26 @@ async def kick(ctx,user:discord.Member):
             embed=discord.Embed(title="User kicked!", description="**{0}** is kicked by **{1}**!".format(user, ctx.message.author), color=0xFDE112)
             await client.send_message(channel, embed=embed)
 		
+@client.command(pass_context=True)  
+@commands.has_permissions(ban_members=True)     
+async def unban(ctx):
+    ban_list = await client.get_bans(ctx.message.server)
+
+    # Show banned users
+    await client.say("Ban list:\n{}".format("\n".join([user.name for user in ban_list])))
+
+    # Unban last banned user
+    if not ban_list:
+      await client.say('Ban list is empty.')
+      return
+    else:
+      await client.unban(ctx.message.server, ban_list[-1])
+      await client.say('Unbanned user: `{}`'.format(ban_list[-1].name))
+      for channel in member.server.channels:
+        if channel.name == '???-multiverse-log-???':
+            embed=discord.Embed(title="User unbanned!", description="**{0}** unbanned by **{1}**!".format(ban_list[-1].name, ctx.message.author), color=0x38761D)
+            await client.send_message(channel, embed=embed)
+		
 @client.command(pass_context = True)
 @commands.has_permissions(kick_members=True)     
 async def userinfo(ctx, user: discord.Member=None):
