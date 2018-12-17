@@ -61,14 +61,7 @@ async def lovedetect(ctx, user: discord.Member = None, *, user2: discord.Member 
             embed.set_image(url=res['message'])
             await client.say(embed=embed)
 
-	
-		
-@client.command(pass_context = True)
-@commands.check(is_dark)
-async def dmall(ctx, *, msg: str):
-    for server_member in ctx.message.server.members:
-      await client.send_message(server_member, msg)
-      await client.delete_message(ctx.message)
+
 
 @client.command(pass_context = True)
 async def ping(ctx):
