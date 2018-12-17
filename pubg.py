@@ -10,10 +10,6 @@ import os
 import functools
 import time
 import datetime
-import json
-import textwrap
-
-
 
 
 client = commands.Bot(description="Here is some command for you", command_prefix=commands.when_mentioned_or("p!"), pm_help = False)
