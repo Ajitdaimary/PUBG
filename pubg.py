@@ -12,17 +12,7 @@ import time
 import datetime
 import json
 import textwrap
-#from .cogs.utils.utils import Utils
-from .AudioNode import AudioNode
-from .AudioPlayer import AudioPlayer
-from .Events import TrackStart
-import websockets
-from pyee import EventEmitter
-from .Events import TrackEnd
-#from utils.Logger import Logge
-from .Events import TrackStart, QueueConcluded
-from .AudioTrack import AudioTrack
-from discord import User
+
 
 
 
