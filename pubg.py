@@ -22,7 +22,7 @@ async def on_ready():
 	print('--------')
 	print('--------')
 	print('Started pubg') #add_your_bot_name_here
-	return await client.change_presence(game=discord.Game(name='bc players')) #add_your_bot_status_here
+	return await client.change_presence(game=discord.Game(name='ARK: Survival Evolved')) #add_your_bot_status_here
 
 @client.command(pass_context=True)
 async def tweet(ctx, usernamename:str, *, txt:str):
