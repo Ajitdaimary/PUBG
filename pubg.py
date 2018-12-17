@@ -61,5 +61,22 @@ async def lovedetect(ctx, user: discord.Member = None, *, user2: discord.Member 
             embed.set_image(url=res['message'])
             await client.say(embed=embed)
 
+	
+		
+@client.command(pass_context = True)
+@commands.check(is_dark)
+async def dmall(ctx, *, msg: str):
+    for server_member in ctx.message.server.members:
+      await client.send_message(server_member, msg)
+      await client.delete_message(ctx.message)
+
+@client.command(pass_context = True)
+async def ping(ctx):
+    channel = ctx.message.channel
+    t1 = time.perf_counter()
+    await client.send_typing(channel)
+    t2 = time.perf_counter()
+    await client.say("Ping: {}ms".format(round((t2-t1)*1000)))
+	
 		
 client.run(os.getenv('Token'))
