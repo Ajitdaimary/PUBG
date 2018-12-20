@@ -14,7 +14,9 @@ import requests
 import json
 import aiohttp
 
-client = commands.Bot(description="Here is some command for you", command_prefix=commands.when_mentioned_or("p!"), pm_help = False)
+Forbidden= discord.Embed(title="Permission Denied", description="1) Please check whether you have permission to perform this action or not. \n2) Please check whether my role has permission to perform this action in this channel or not. \n3) Please check my role position.", color=0x00ff00)
+client = commands.Bot(description="MultiVerse Official Bot", command_prefix=commands.when_mentioned_or("sm!"), pm_help = True)
+client.remove_command('help')
 
 @client.event
 async def on_ready():
@@ -39,8 +41,6 @@ async def help(ctx):
       embed.set_author(name='Help')
       embed.add_field(name = 'Please Join my Server and Help and Support !! Server Link:',value ='https://discord.gg/sNG3tTP',inline = False)
       embed.add_field(name = '⚙ MODERATION COMMANDS ',value ='``sm!kick``, ``sm!embed``, ``sm!ban``, ``sm!unban``,',inline = False)
-      embed.add_field(name = '😁 FUN COMMANDS ',value ='``sm!meme``,',inline = False)
-      embed.add_field(name = '👥 GENERAL COMMANDS ',value ='``m!botinvite``, ``sm!ping``, ``sm!avatar or sm!avatar @user``,',inline = False)
       dmmessage = await client.send_message(author,embed=embed)
       await client.say('Check your direct messages')
  
