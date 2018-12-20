@@ -39,7 +39,7 @@ async def help(ctx):
       r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
       embed = discord.Embed(color = discord.Color((r << 16) + (g << 8) + b))
       embed.set_author(name='⚙commands')
-      embed.add_field(name = 'sm!kick, sm!embed, sm!ban, sm!unban,',value =',',inline = False)
+      embed.add_field(name = 'p!kick, p!embed, p!ban, p!unban,'value =',',inline = False)
       dmmessage = await client.send_message(author,embed=embed)
       await client.say('Check your direct messages')
  
