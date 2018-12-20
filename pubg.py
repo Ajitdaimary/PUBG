@@ -38,8 +38,8 @@ async def help(ctx):
       author = ctx.message.author
       r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
       embed = discord.Embed(color = discord.Color((r << 16) + (g << 8) + b))
-      embed.set_author(name='⚙commands')
-      embed.add_field(name = 'p!kick, p!embed, p!ban, p!unban,',value ='@user',inline = False)
+      embed.set_author(name='💁Help')
+      embed.add_field(name = '⚙commands,',value ='p!tweet <name><text>, p!lovedetect @user1@user2, p!ping, p!setupwelcome, p!virus @user<text>, p!meme',inline = False)
       dmmessage = await client.send_message(author,embed=embed)
       await client.say('Check your direct messages')
  
